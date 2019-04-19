@@ -138,16 +138,16 @@ command set [<material>]:
                   stop
               delete {FSWE::%uuid of player%.RUNNING}
               send "{@prefix}{@finished-job}"
-            else:
-              send "{@prefix}{@cannot-use-this-item}"
           else:
-            set {_pos} to 2
-            send "{@prefix}{@position-not-set}"
+            send "{@prefix}{@cannot-use-this-item}"
         else:
-          set {_pos} to 1
+          set {_pos} to 2
           send "{@prefix}{@position-not-set}"
       else:
-        send "{@prefix}{@no-permission}"
+        set {_pos} to 1
+        send "{@prefix}{@position-not-set}"
+    else:
+      send "{@prefix}{@no-permission}"
 
 on quit:
   delete {FSWE::%uuid of player%.POS-1}, {FSWE::%uuid of player%.POS-2} and {FSWE::%uuid of player%.RUNNING}
