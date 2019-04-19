@@ -2,7 +2,7 @@ import:
     java.util.UUID
 
 options:
-	plugin-version: 1.0.0
+  plugin-version: 1.0.0
 
 
 
@@ -10,163 +10,162 @@ options:
 # ● SETTINGS ●
 #
 
-	wand-item: wooden axe
+  wand-item: wooden axe
 
 	#you can also use seconds "example, block-place-speed: 2 seconds"
-	block-place-speed: 2 ticks
+  block-place-speed: 2 ticks
 
 	#Block from bellow will not be broken.
-	block-break-blacklist: sign or chest or bedrock or mob spawner
+  block-break-blacklist: sign or chest or bedrock or mob spawner
 
 	#When this is false, the player needs to wait until the current job is done to start another.
-	multiple-jobs: false
+  multiple-jobs: false
 
 # ● MESSAGES ●
 
 
-	prefix: &6&lWORLD EDIT &8&l» &7
+  prefix: &6&lWORLD EDIT &8&l» &7
 
-	position-set: &ePosition &3%{_pos}% &ehas been set.
+  position-set: &ePosition &3%{_pos}% &ehas been set.
 
-	position-not-set: &ePosition &3%{_pos}% &eis not set.
+  position-not-set: &ePosition &3%{_pos}% &eis not set.
 
-	out-of-blocks: &eOut of blocks.
+  out-of-blocks: &eOut of blocks.
 
-	cannot-use-this-item: &eYou cannot use this item.
+  cannot-use-this-item: &eYou cannot use this item.
 
-	started-job: &eStarted to placing blocks...
+  started-job: &eStarted to placing blocks...
 
-	already-started: &ePlease wait until the current job is done.
+  already-started: &ePlease wait until the current job is done.
 
-	finished-job: &eDone.
+  finished-job: &eDone.
 
-	block-blacklisted: &cThis block is blacklisted.
-
-	no-permission: &cYou don't have permission to execute this command!
+  block-blacklisted: &cThis block is blacklisted.
+  no-permission: &cYou don't have permission to execute this command!
 
 #By real#0001
 #https://github.com/r3al
 plural expression blocks from %location% (to|and) %location%:
-	loop of: block
-	return type: blocks
-	get:
-		set {_1} to expr-1
-		set {_2} to expr-2
-		set {_x} to 1
-		set {_y} to 1
-		set {_z} to 1
-		if x coord of {_1} > x coord of {_2}:
-			set {_x} to -1
-		if y coord of {_1} > y coord of {_2}:
-			set {_y} to -1
-		if z coord of {_1} > z coord of {_2}:
-			set {_z} to -1
-		set {_base1} to {_1}
-		loop abs(x coord of {_1} - x coord of {_2}) + 1 times:
-			loop abs(z coord of {_1} - z coord of {_2}) + 1 times:
-				loop abs(y coord of {_1} - y coord of {_2}) + 1 times:
+  loop of: block
+  return type: blocks
+  get:
+    set {_1} to expr-1
+    set {_2} to expr-2
+    set {_x} to 1
+    set {_y} to 1
+    set {_z} to 1
+    if x coord of {_1} > x coord of {_2}:
+      set {_x} to -1
+    if y coord of {_1} > y coord of {_2}:
+      set {_y} to -1
+    if z coord of {_1} > z coord of {_2}:
+      set {_z} to -1
+    set {_base1} to {_1}
+    loop abs(x coord of {_1} - x coord of {_2}) + 1 times:
+      loop abs(z coord of {_1} - z coord of {_2}) + 1 times:
+        loop abs(y coord of {_1} - y coord of {_2}) + 1 times:
 
-					add 1 to {_next}
-					set {_b::%{_next}%} to block at {_1}
+          add 1 to {_next}
+          set {_b::%{_next}%} to block at {_1}
 
-					add {_y} to y coord of {_1}
+          add {_y} to y coord of {_1}
 
-				add {_z} to z coord of {_1}
-				set y coord of {_1} to y coord of {_base1}
+          add {_z} to z coord of {_1}
+          set y coord of {_1} to y coord of {_base1}
 
-			add {_x} to x coord of {_1}
-			set z coord of {_1} to z coord of {_base1}
-		return {_b::*}
-	set:
-		loop blocks from expr-1 and expr-2:
-			set block at loop-value to change value
+        add {_x} to x coord of {_1}
+        set z coord of {_1} to z coord of {_base1}
+      return {_b::*}
+    set:
+      loop blocks from expr-1 and expr-2:
+      set block at loop-value to change value
 
 
 function fswe_set_pos(p: player, loc: location, pos: text):
-	set {_uuid} to uuid of {_p}
-	set {FSWE::%{_uuid}%.POS-%{_pos}%} to {_loc}
-	send "{@prefix}{@position-set}" to {_p}
+  set {_uuid} to uuid of {_p}
+  set {FSWE::%{_uuid}%.POS-%{_pos}%} to {_loc}
+  send "{@prefix}{@position-set}" to {_p}
 
 on left-click with {@wand-item}:
-	cancel event
-	target block is not air
-	distance between player and target block is smaller than 5
-	fswe_set_pos(player, location of target block, "1")
+  cancel event
+  target block is not air
+  distance between player and target block is smaller than 5
+  fswe_set_pos(player, location of target block, "1")
 
 on right-click with {@wand-item}:
-	cancel event
-	target block is not air
-	distance between player and target block is smaller than 5
-	fswe_set_pos(player, location of target block, "2")
+  cancel event
+  target block is not air
+  distance between player and target block is smaller than 5
+  fswe_set_pos(player, location of target block, "2")
 
 command set [<material>]:
-	trigger:
-		if player has permission "fswe.set":
-			if {FSWE::%uuid of player%.POS-1} is set:
-				if {FSWE::%uuid of player%.POS-2} is set:
-					if arg-1 is not set:
-						set {_block} to player's tool
-					if arg-1 is set:
-						set {_block} to arg-1
-					if {_block} is solid:
-						if {@multiple-jobs} is false:
-							{FSWE::%uuid of player%.RUNNING} is set
-							send "{@prefix}{@already-started}"
-							stop
-						set {FSWE::%uuid of player%.RUNNING} to true
-						send "{@prefix}{@started-job}"
-						loop blocks from {FSWE::%uuid of player%.POS-1} and {FSWE::%uuid of player%.POS-2}:
-							if player is online:
-								if number of {_block} in player's inventory is greater than 0:
+  trigger:
+    if player has permission "fswe.set":
+      if {FSWE::%uuid of player%.POS-1} is set:
+        if {FSWE::%uuid of player%.POS-2} is set:
+          if arg-1 is not set:
+            set {_block} to player's tool
+          if arg-1 is set:
+            set {_block} to arg-1
+          if {_block} is solid:
+            if {@multiple-jobs} is false:
+              {FSWE::%uuid of player%.RUNNING} is set
+              send "{@prefix}{@already-started}"
+              stop
+            set {FSWE::%uuid of player%.RUNNING} to true
+            send "{@prefix}{@started-job}"
+            loop blocks from {FSWE::%uuid of player%.POS-1} and {FSWE::%uuid of player%.POS-2}:
+              if player is online:
+                if number of {_block} in player's inventory is greater than 0:
                   if player cannot build at event-location:
                     cancel event
                     exit
                   if player is within island at event-location:
                     if block at loop-value is not air or {@block-break-blacklist}:
-										  set {_b-give} to block at loop-value
-										  {_b-give} is not any leaves
-										  give {_b-give} to player
-									  if block at loop-value is not {@block-break-blacklist}:
-										  set block at loop-value to {_block}
-									  play "%{_block}% break" parsed as visual effect at location of loop-value
-									  remove 1 of {_block} from player's inventory
-									  wait {@block-place-speed}
-							  	else:
-									  delete {FSWE::%uuid of player%.RUNNING}
-									  send "{@prefix}{@out-of-blocks}"
-									  stop
-							  else:
-								  stop
-						  delete {FSWE::%uuid of player%.RUNNING}
-						  send "{@prefix}{@finished-job}"
-					  else:
-						  send "{@prefix}{@cannot-use-this-item}"
-				  else:
-					  set {_pos} to 2
-					  send "{@prefix}{@position-not-set}"
-		  	else:
-				  set {_pos} to 1
-				  send "{@prefix}{@position-not-set}"
-	  	else:
-		  	send "{@prefix}{@no-permission}"
+                      set {_b-give} to block at loop-value
+                      {_b-give} is not any leaves
+                      give {_b-give} to player
+                    if block at loop-value is not {@block-break-blacklist}:
+                      set block at loop-value to {_block}
+                    play "%{_block}% break" parsed as visual effect at location of loop-value
+                    remove 1 of {_block} from player's inventory
+                    wait {@block-place-speed}
+                  else:
+                    delete {FSWE::%uuid of player%.RUNNING}
+                    send "{@prefix}{@out-of-blocks}"
+                    stop
+                else:
+                  stop
+              delete {FSWE::%uuid of player%.RUNNING}
+              send "{@prefix}{@finished-job}"
+            else:
+              send "{@prefix}{@cannot-use-this-item}"
+          else:
+            set {_pos} to 2
+            send "{@prefix}{@position-not-set}"
+        else:
+          set {_pos} to 1
+          send "{@prefix}{@position-not-set}"
+      else:
+        send "{@prefix}{@no-permission}"
 
 on quit:
-	delete {FSWE::%uuid of player%.POS-1}, {FSWE::%uuid of player%.POS-2} and {FSWE::%uuid of player%.RUNNING}
+  delete {FSWE::%uuid of player%.POS-1}, {FSWE::%uuid of player%.POS-2} and {FSWE::%uuid of player%.RUNNING}
 
 on load:
-	send "&8|--------------------------------------------&8|" to console
-	send " " to console
-	send "{@prefix}&3&lLoading &ev.{@plugin-version}&3..." to console
-	send "{@prefix}&3&lPlugin loaded!" to console
-	send " " to console
-	send "&8|--------------------------------------------&8|" to console
-	delete {FSWE::*}
+  send "&8|--------------------------------------------&8|" to console
+  send " " to console
+  send "{@prefix}&3&lLoading &ev.{@plugin-version}&3..." to console
+  send "{@prefix}&3&lPlugin loaded!" to console
+  send " " to console
+  send "&8|--------------------------------------------&8|" to console
+  delete {FSWE::*}
 
 on unload:
-	send "&8|--------------------------------------------&8|" to console
-	send " " to console
-	send "{@prefix}&3&lDisabling &ev.{@plugin-version}&3&l..." to console
-	send "{@prefix}&3&lv.{@plugin-version} disabled!" to console
-	send " " to console
-	send "&8|--------------------------------------------&8|" to console
-	stop
+  send "&8|--------------------------------------------&8|" to console
+  send " " to console
+  send "{@prefix}&3&lDisabling &ev.{@plugin-version}&3&l..." to console
+  send "{@prefix}&3&lv.{@plugin-version} disabled!" to console
+  send " " to console
+  send "&8|--------------------------------------------&8|" to console
+  stop
