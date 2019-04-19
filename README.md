@@ -9,10 +9,11 @@ What things you need to have on your server in order to use FSWE
 * [FabledSkyblock](https://songoda.com/marketplace/product/fabledskyblock-the-ultimate-skyblock-plugin.17)
 * [Sky](https://github.com/TheLimeGlass/Sky/releases)
 * [Skript](https://github.com/SkriptLang/Skript/releases)
+* [Skript-Mirror](https://github.com/btk5h/skript-mirror/releases)
 
 ### Installing
 
-* Drag and drop 'Sky' and 'Skript' into your /plugins/ folder
+* Drag and drop 'Sky', 'Skript-Mirror' and 'Skript' into your /plugins/ folder
 * Restart your server
 * Drop FSWE.sk into your /plugins/Skript/scripts/ folder
 * Restart your server
